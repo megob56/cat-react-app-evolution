@@ -89,7 +89,7 @@ describe("When running the app", () => {
       });
 
       it("should render all images of the selected breed in the modal", () => {
-        expect(wrapper.state().catImage).toBe("catImageURL");
+        expect(wrapper.state().catImage[0]).toBe("catImageURL");
       });
     });
   });

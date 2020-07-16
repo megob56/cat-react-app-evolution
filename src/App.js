@@ -6,7 +6,7 @@ import './App.css';
 class App extends React.Component {
   constructor(props){
     super(props);
-    
+  
     this.state = {
       isModalOpen: false,
       currOwner: "",
@@ -68,6 +68,24 @@ class App extends React.Component {
     console.log(this.state.catImage);
   }
 
+  onAddCatToOWner = () => {
+    let ownerCatCombo = {
+      'Dan G': { breed: '', image: '' },
+      "Jame'z": { breed: '', image: '' },
+      "Sam": { breed: '', image: '' },
+      "Stjep": { breed: '', image: '' },
+      "Chris": { breed: '', image: '' },
+      "Rob": { breed: '', image: '' },
+      "JB": { breed: '', image: '' },
+      "Shuks": { breed: '', image: '' }
+    }
+    console.log(ownerCatCombo[this.state.currOwner])
+
+    ownerCatCombo[this.state.currOwner]["breed"] = this.state.selectedBreed;
+    ownerCatCombo[this.state.currOwner]["image"] = this.state.catImage;
+    
+  }
+
   componentDidMount() {
     let initialBreeds = [];
     fetch("https://api.thecatapi.com/v1/breeds")
@@ -83,6 +101,31 @@ class App extends React.Component {
 
   render(){
     const owners = ["Dan G", "Jame'z", "Sam", "Stjep", "Chris", "Rob", "JB", "Shuks"];
+    let ownerCatCombo = {
+      'Dan G': { breed: '', image: '' },
+      "Jame'z": { breed: '', image: '' },
+      "Sam": { breed: '', image: '' },
+      "Stjep": { breed: '', image: '' },
+      "Chris": { breed: '', image: '' },
+      "Rob": { breed: '', image: '' },
+      "JB": { breed: '', image: '' },
+      "Shuks": { breed: '', image: '' }
+    }
+
+    ownerCatCombo[this.state.currOwner]["breed"] = this.state.selectedBreed;
+    ownerCatCombo[this.state.currOwner]["image"] = this.state.catImage;
+    // let ownerObj = {};
+    // owners.forEach(x => { 
+    //   if(!ownerObj[x]){
+    //     ownerObj[x] = {breed: "", image: ""}
+    //   } 
+    //   return ownerObj;
+    // });
+    // this.setState({ownerCatCombo: ownerObj});
+
+    // console.log(ownerObj);
+    // console.log(this.state.ownerCatCombo)
+
     return(
       <div className="App">
         <h1>Owners</h1>
@@ -90,7 +133,7 @@ class App extends React.Component {
           <tbody>
             {owners.map(owner => (
               <tr id={`row-of-${owner}`}>
-                <td id={owner} className={`js-${owner}-name-row`}>{owner} - {this.state.selectedBreed}</td>
+                <td id={owner} className={`js-${owner}-name-row`}>{owner} {ownerCatCombo[{owner}]['breed']}</td>
                 <button className={"js-open-modal-button"} onClick={ this.openModal } value={ owner }>Add cat</button>
               </tr>
             ))}
