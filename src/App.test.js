@@ -94,7 +94,7 @@ describe("When running the app", () => {
     });
   });
 
-  describe("When clicking the add cat button", () => {
+  describe("When clicking the add cat to owner button", () => {
     beforeAll(() => {
       wrapper.setState({isModalOpen: true});
       wrapper.setState({selectedBreed: "American Shorthair"});
@@ -103,6 +103,9 @@ describe("When running the app", () => {
     it("should add the name of the cat next to the owners name in the track row", () => {
       expect(wrapper.find(".js-owner-name-row").at(0).text()).toBe("Dan G - American Shorthair");
     });
+    it("should not allow you to add another cat to the same owner again", () => {
+      expect(wrapper.find('js-open-modal-button').length).toBe(0);
+    })
   });
 
   describe("When clicking the close modal button after adding a cat", () => {
