@@ -2,3 +2,11 @@
   text-align: center;
 }
 
+.js-cat-image-div {
+  width: 100px;
+  height: 100px;
+}
+
+.js-cat-image-div img {
+  height: 100%;
+}

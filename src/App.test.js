@@ -50,7 +50,10 @@ describe("When running the app", () => {
 
   describe("When opening the modal", () => {
     beforeAll(() => {
-      wrapper.find('.js-open-modal-button').at(0).simulate('click');
+      //wrapper.find('.js-open-modal-button').at(0).simulate('click');
+      wrapper.setState({isModalOpen: true});
+      wrapper.setState({selectedBreed: "testBreed"});
+      wrapper.setState({currOwner: "Meaghan"});
     });
 
     it("the modal should be visible", () => {
@@ -76,7 +79,7 @@ describe("When running the app", () => {
       beforeAll(() => {
         wrapper.setState({selectedBreed: "test"});
         wrapper.setState({isModalOpen: true});
-        wrapper.find('.js-submit-choice-button').simulate("click");
+        wrapper.find('.js-submit-choice-button').at(0).simulate("click");
       });
 
       it("should call the api", () => {
@@ -95,7 +98,7 @@ describe("When running the app", () => {
     beforeAll(() => {
       wrapper.setState({isModalOpen: true});
       wrapper.setState({selectedBreed: "American Shorthair"});
-      wrapper.find('.js-add-cat-to-owner-button').simulate("click");
+      wrapper.find('.js-add-cat-to-owner-button').at(0).simulate("click");
     });
     it("should add the name of the cat next to the owners name in the track row", () => {
       expect(wrapper.find(".js-owner-name-row").at(0).text()).toBe("Dan G - American Shorthair");
@@ -105,7 +108,7 @@ describe("When running the app", () => {
   describe("When clicking the close modal button after adding a cat", () => {
     beforeAll(() => {
       wrapper.setState({isModalOpen: true});
-      wrapper.find('.js-close-modal-button').simulate("click");
+      wrapper.find('.js-close-modal-button').at(0).simulate("click");
     })
     it("should no longer display the modal", () => {
       expect(wrapper.state().isModalOpen).toBe(false);
