@@ -41,7 +41,8 @@ class App extends React.Component {
           </tbody>
         </table>
         <Modal isOpen={ this.state.isModalOpen }>
-          <button className="js-close-modal-button" onClick={ this.closeModal }></button>
+          <button className="js-close-modal-button" onClick={ this.closeModal }>Close</button>
+          <button className="js-add-cat-to-owner-modal">Add cat</button>
         </Modal>
       </div>
     );
