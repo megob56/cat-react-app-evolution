@@ -67,14 +67,16 @@ describe("When running the app", () => {
       expect(fetch).toHaveBeenCalledWith("https://api.thecatapi.com/v1/breeds");
     })
 
-    it("should display a drop down list", () => {
+    it("should display a drop down list & submit button", () => {
       expect(wrapper.find('.js-select-cat-breed-menu').length).toBe(1);
+      expect(wrapper.find('.js-submit-choice-button').length).toBe(1);
     });
 
-    describe("When choosing a cat breed from the drop down list", () => {
+    describe("When choosing a cat breed from the drop down list & hitting submit", () => {
       beforeAll(() => {
         wrapper.setState({selectedBreed: "test"});
         wrapper.setState({isModalOpen: true});
+        wrapper.find('.js-submit-choice-button').simulate("click");
       });
 
       it("should call the api", () => {

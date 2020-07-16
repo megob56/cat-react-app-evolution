@@ -11,8 +11,11 @@ class App extends React.Component {
       isModalOpen: false,
       breeds: [],
       selectedBreed: "",
-
+      breedId: [],
+      catImage: [],
     };
+
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   openModal = () => {
@@ -27,8 +30,37 @@ class App extends React.Component {
     });
   }
 
-  handleChange = (e) => {
+   handleChange = (e) => {
     this.setState({ selectedBreed: e.target.value })
+    //console.log(this.state.selectedBreed[0])
+  }
+
+  async onSubmit(){
+    let initialIds = [];
+    await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectedBreed}`)
+      .then((response) => response.json())
+      .then((data => {
+        initialIds = data.map((x) => {
+          return x.id
+        });
+        this.setState({breedId: initialIds});
+      }));
+
+    console.log(this.state.breedId)
+
+    let initialCatImage = [];
+    
+    await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
+      .then((response) => response.json())
+      .then((data => {
+        initialCatImage = data.map((x) => {
+          return x.url
+        });
+        this.setState({catImage: initialCatImage});
+      }));
+
+    console.log(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`);
+    console.log(this.state.catImage);
   }
 
   componentDidMount() {
@@ -52,9 +84,9 @@ class App extends React.Component {
         <h1>Owners</h1>
         <table className="js-owner-table">
           <tbody>
-            {owners.map(owner => (
+            {owners.map((owner, i) => (
               <tr key={`row-of-${owner}`}>
-                <td key={owner} className="js-owner-name-row">{owner}{this.state.selectedBreed}</td>
+                <td key={owner} className="js-owner-name-row">{owner} - {this.state.selectedBreed}</td>
                 <button className={"js-open-modal-button"} onClick={ this.openModal }>Add cat</button>
               </tr>
             ))}
@@ -71,14 +103,20 @@ class App extends React.Component {
                       </option>
                   ))}
             </select>
+            <button className="js-submit-choice-button" onClick={ this.onSubmit }>Submit</button>
           </div>
           <button className="js-add-cat-to-owner-button">Add</button>
+          {this.state.catImage.map(image => (
+            <div className = "js-cat-image-div">
+              <img className="js-image-of-cat" src={image} alt = "Cat" />
+            </div>
+          ))}
+          
         </Modal>
       </div>
     );
   }
 }
-
 
 
 export default App;
