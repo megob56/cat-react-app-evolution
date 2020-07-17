@@ -13,7 +13,7 @@ class App extends React.Component {
       breeds: [],
       selectedBreed: "",
       breedId: null,
-      catImage: [],
+      catImages: "",
       loading: false,
     };
 
@@ -31,7 +31,7 @@ class App extends React.Component {
     this.setState({
       isModalOpen: false,
       selectedBreed: "",
-      catImage: []
+      catImages: ""
     });
   }
 
@@ -43,7 +43,7 @@ class App extends React.Component {
   async onSubmit(){
     this.setState({
       loading: true,
-      catImage: [],
+      catImages: "",
     });
 
       await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectedBreed}`)
@@ -52,22 +52,24 @@ class App extends React.Component {
        
     console.log(this.state.breedId)
 
-    let initialCatImage = [];
-    for(let i = 0; i < 5; i++){
       await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
         .then((response) => response.json())
         .then((data => {
-          initialCatImage.push(data[0].url);
-          this.setState({catImage: initialCatImage});
+          this.setState({catImages: data[0].url});
       }));
-    }
+    
     
       this.setState({loading: false})
 
     console.log(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`);
-    console.log(this.state.catImage);
+    console.log(this.state.catImages);
   }
 
+  onAddCatToOwner = () => {
+    this.setState({
+
+    })
+  }
  
 
   componentDidMount() {
@@ -113,13 +115,12 @@ class App extends React.Component {
             </select>
             <button className="js-submit-choice-button" onClick={ this.onSubmit }>Submit</button>
           </div>
-          <button className="js-add-cat-to-owner-button">Add</button>
-          {this.state.catImage.map(image => (
-            <div className = "js-cat-image-div">
+          <div className = "js-cat-image-div">
               {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://thumbs.gfycat.com/PotableEmbarrassedFrenchbulldog-small.gif"}/>}
-              {this.state.catImage && <img className="js-image-of-cat" src={image} alt = "Cat" />}
-            </div>
-          ))}
+              {this.state.catImages && <img className="js-image-of-cat" src={this.state.catImages} alt = "Cat" />}
+              {this.state.catImages && <button className="js-add-cat-to-owner-button">Add</button>}
+          </div>
+         
           
         </Modal>
       </div>

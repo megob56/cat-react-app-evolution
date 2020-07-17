@@ -54,6 +54,7 @@ describe("When running the app", () => {
       wrapper.setState({isModalOpen: true});
       wrapper.setState({selectedBreed: "testBreed"});
       wrapper.setState({currOwner: "Meaghan"});
+      wrapper.setState({catImages: "catImage"});
     });
 
     it("the modal should be visible", () => {
@@ -89,7 +90,7 @@ describe("When running the app", () => {
       });
 
       it("should render all images of the selected breed in the modal", () => {
-        expect(wrapper.state().catImage[0]).toBe("catImageURL");
+        expect(wrapper.state().catImages).toBe("catImageURL");
       });
     });
   });

@@ -10,3 +10,7 @@
 .js-cat-image-div img {
   height: 100%;
 }
+
+.js-add-cat-to-owner-button {
+  position: absolute;
+}
