@@ -105,7 +105,7 @@ describe("When running the app", () => {
       expect(wrapper.find(".js-owner-name-row").at(0).text()).toBe("Dan G - American Shorthair");
     });
     it("should not allow you to add another cat to the same owner again", () => {
-      expect(wrapper.find('js-open-modal-button').length).toBe(0);
+      expect(wrapper.find('js-open-modal-button').at(0).length).toBe(0);
     })
   });
 

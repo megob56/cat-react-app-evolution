@@ -15,6 +15,8 @@ class App extends React.Component {
       breedId: null,
       catImages: "",
       loading: false,
+      addCat: false,
+      chosenCatBreed: "",
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -36,7 +38,7 @@ class App extends React.Component {
   }
 
    handleChange = (e) => {
-    this.setState({ selectedBreed: e.target.value })
+    this.setState({ selectedBreed: e.target.value, chosenCatBreed: e.target.value })
     //console.log(this.state.selectedBreed[0])
   }
 
@@ -67,7 +69,7 @@ class App extends React.Component {
 
   onAddCatToOwner = () => {
     this.setState({
-
+      addCat: true,
     })
   }
  
@@ -95,8 +97,8 @@ class App extends React.Component {
           <tbody>
             {owners.map(owner => (
               <tr id={`row-of-${owner}`}>
-                <td id={owner} className={`js-${owner}-name-row`}>{owner} </td>
-                <button className={"js-open-modal-button"} onClick={ this.openModal } value={ owner }>Add cat</button>
+                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.state.addCat && "- Owns "+ this.state.chosenCatBreed} </td>
+                {!this.state.addCat && <button className={"js-open-modal-button"} onClick={ this.openModal } value={ owner }>Add cat</button>}
               </tr>
             ))}
           </tbody>
@@ -118,7 +120,7 @@ class App extends React.Component {
           <div className = "js-cat-image-div">
               {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://thumbs.gfycat.com/PotableEmbarrassedFrenchbulldog-small.gif"}/>}
               {this.state.catImages && <img className="js-image-of-cat" src={this.state.catImages} alt = "Cat" />}
-              {this.state.catImages && <button className="js-add-cat-to-owner-button">Add</button>}
+              {this.state.catImages && <button className="js-add-cat-to-owner-button" onClick={ this.onAddCatToOwner }>Add</button>}
           </div>
          
           
