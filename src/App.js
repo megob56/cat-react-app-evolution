@@ -17,10 +17,24 @@ class App extends React.Component {
       loading: false,
       addCat: false,
       chosenCatBreed: "",
+
     };
 
-    this.onSubmit = this.onSubmit.bind(this);
+    this.ownerCatCombo = {
+      DanG: { breed: '', image: '', hasCat: false },
+      Jamez: { breed: '', image: '', hasCat: false },
+      Sam: { breed: '', image: '', hasCat: false },
+      Stjep: { breed: '', image: '', hasCat: false },
+      Chris: { breed: '', image: '', hasCat: false },
+      Rob: { breed: '', image: '', hasCat: false },
+      JB: { breed: '', image: '', hasCat: false },
+      Shuks: { breed: '', image: '', hasCat: false }
+    }
+    console.log(Object.keys(this.ownerCatCombo));
+
   }
+
+  
 
   openModal = (e) => {
     this.setState({
@@ -42,7 +56,7 @@ class App extends React.Component {
     //console.log(this.state.selectedBreed[0])
   }
 
-  async onSubmit(){
+  onSubmit = async() => {
     this.setState({
       loading: true,
       catImages: "",
@@ -53,6 +67,7 @@ class App extends React.Component {
         .then((data) => this.setState({ breedId: data[0].id }));
        
     console.log(this.state.breedId)
+
 
       await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
         .then((response) => response.json())
@@ -68,9 +83,8 @@ class App extends React.Component {
   }
 
   onAddCatToOwner = () => {
-    this.setState({
-      addCat: true,
-    })
+    this.ownerCatCombo[this.state.currOwner].breed = this.state.chosenCatBreed;
+    this.ownerCatCombo[this.state.currOwner].hasCat = true;
   }
  
 
@@ -87,22 +101,24 @@ class App extends React.Component {
     }));
   }
 
+
   render(){
-    const owners = ["Dan G", "Jame'z", "Sam", "Stjep", "Chris", "Rob", "JB", "Shuks"];
 
     return(
       <div className="App">
         <h1>Owners</h1>
         <table className="js-owner-table">
           <tbody>
-            {owners.map(owner => (
+            {Object.keys(this.ownerCatCombo).map(owner => (
               <tr id={`row-of-${owner}`}>
-                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.state.addCat && "- Owns "+ this.state.chosenCatBreed} </td>
-                {!this.state.addCat && <button className={"js-open-modal-button"} onClick={ this.openModal } value={ owner }>Add cat</button>}
+                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed} </td>
+                {!this.ownerCatCombo[owner].hasCat && <button className={"js-open-modal-button-"+owner} onClick={ this.openModal } value={ owner }>Add cat</button>}
               </tr>
             ))}
           </tbody>
         </table>
+
+
         <Modal isOpen={ this.state.isModalOpen } className="js-add-cat-to-owner-modal">
           <h1>Choose a cat for {this.state.currOwner}</h1>
           <button className="js-close-modal-button" onClick={ this.closeModal }>Close</button>

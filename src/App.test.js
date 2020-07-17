@@ -41,7 +41,7 @@ describe("When running the app", () => {
   });
 
   it("should display a table with a row named after the owner & a button", () => {
-    expect(wrapper.find(".js-open-modal-button").length).toBe(owners.length);
+    expect(wrapper.find(".js-open-modal-button-DanG").length).toBe(1);
   });
 
   it("should not display the modal", () => {
@@ -95,18 +95,31 @@ describe("When running the app", () => {
     });
   });
 
-  describe("When clicking the add cat to owner button", () => {
+  describe("When clicking the add cat to owner button & a cat has not previously been added", () => {
     beforeAll(() => {
       wrapper.setState({isModalOpen: true});
+      wrapper.setState({currOwner: "DanG"});
       wrapper.setState({selectedBreed: "American Shorthair"});
-      wrapper.find('.js-add-cat-to-owner-button').at(0).simulate("click");
+      wrapper.setState({chosenCatBreed: "American Shorthair"});
+      wrapper.find('.js-add-cat-to-owner-button').simulate("click");
+      wrapper.update();
     });
     it("should add the name of the cat next to the owners name in the track row", () => {
-      expect(wrapper.find(".js-owner-name-row").at(0).text()).toBe("Dan G - American Shorthair");
+      expect(wrapper.find(".js-DanG-name-row").text()).toBe("DanG - Owns American Shorthair");
+    });
+  });
+
+  describe("When clicking the add cat to owner button & a cat has previously been added", () => {
+    beforeAll(() => {
+      wrapper.setState({isModalOpen: true});
+      wrapper.setState({currOwner: "DanG"});
+      wrapper.setState({selectedBreed: "American Shorthair"});
+      wrapper.setState({chosenCatBreed: "American Shorthair"});
+      wrapper.find('.js-add-cat-to-owner-button').simulate("click");
     });
     it("should not allow you to add another cat to the same owner again", () => {
-      expect(wrapper.find('js-open-modal-button').at(0).length).toBe(0);
-    })
+      expect(wrapper.find('js-open-modal-button-DanG').length).toBe(0);
+    });
   });
 
   describe("When clicking the close modal button after adding a cat", () => {
