@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import SelectCatModal from './SelectCatModal';
 
 import './App.css';
 
@@ -130,28 +131,6 @@ class App extends React.Component {
             ))}
           </tbody>
         </table>
-
-
-        <Modal isOpen={ this.state.isModalOpen } className="js-add-cat-to-owner-modal">
-          <h1>Choose a cat for {this.state.currOwner}</h1>
-          <button className="js-close-modal-button" onClick={ this.closeModal }>Close</button>
-          <div className = "js-select-menu-div">
-            <select className='js-select-cat-breed-menu' onChange={ this.handleChange } value = { this.state.selectedBreed }>
-                  <option>Choose One...</option>
-                  {this.state.breeds.map(breed => (
-                      <option key={breed} value={breed}>
-                          {breed}
-                      </option>
-                  ))}
-            </select>
-            <button className="js-submit-choice-button" onClick={ this.onSubmit }>Submit</button>
-          </div>
-          <div className = "js-cat-image-div">
-              {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://thumbs.gfycat.com/PotableEmbarrassedFrenchbulldog-small.gif"}/>}
-              {this.state.catImages && <img className="js-image-of-cat" src={this.state.catImages} alt = "Cat" />}
-              {<button className="js-add-cat-to-owner-button" onClick={ this.onAddCatToOwner }>Add</button>}
-          </div>    
-        </Modal>
 
       </div>
     );

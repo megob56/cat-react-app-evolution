@@ -102,6 +102,7 @@ describe("When running the app", () => {
       wrapper.find('.js-add-cat-to-owner-button').simulate("click");
       wrapper.find('.js-close-modal-button').simulate("click");
     });
+
     it("should add the name of the cat next to the owners name in the track row", () => {
       expect(wrapper.find(".js-DanG-name-row").text()).toBe("DanG - Owns American Shorthair");
     });
