@@ -111,7 +111,7 @@ class App extends React.Component {
           <tbody>
             {Object.keys(this.ownerCatCombo).map(owner => (
               <tr id={`row-of-${owner}`}>
-                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed} </td>
+                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed}</td>
                 {!this.ownerCatCombo[owner].hasCat && <button className={"js-open-modal-button-"+owner} onClick={ this.openModal } value={ owner }>Add cat</button>}
               </tr>
             ))}
@@ -136,7 +136,7 @@ class App extends React.Component {
           <div className = "js-cat-image-div">
               {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://thumbs.gfycat.com/PotableEmbarrassedFrenchbulldog-small.gif"}/>}
               {this.state.catImages && <img className="js-image-of-cat" src={this.state.catImages} alt = "Cat" />}
-              {this.state.catImages && <button className="js-add-cat-to-owner-button" onClick={ this.onAddCatToOwner }>Add</button>}
+              {<button className="js-add-cat-to-owner-button" onClick={ this.onAddCatToOwner }>Add</button>}
           </div>
          
           
