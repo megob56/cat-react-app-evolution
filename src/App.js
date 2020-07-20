@@ -30,7 +30,19 @@ class App extends React.Component {
       JB: { breed: '', image: '', hasCat: false },
       Shuks: { breed: '', image: '', hasCat: false }
     }
-    console.log(Object.keys(this.ownerCatCombo));
+
+  // let owners = [ { name:"DanG",  breed: '', image: '', hasCat: false },
+  //     Jamez: { breed: '', image: '', hasCat: false },
+  //     Sam: { breed: '', image: '', hasCat: false },
+  //     Stjep: { breed: '', image: '', hasCat: false },
+  //     Chris: { breed: '', image: '', hasCat: false },
+  //     Rob: { breed: '', image: '', hasCat: false },
+  //     JB: { breed: '', image: '', hasCat: false },
+  //     Shuks: { breed: '', image: '', hasCat: false }]
+  
+
+  
+  console.log(Object.keys(this.ownerCatCombo));
 
   }
 
@@ -85,6 +97,7 @@ class App extends React.Component {
   onAddCatToOwner = () => {
     this.ownerCatCombo[this.state.currOwner].breed = this.state.chosenCatBreed;
     this.ownerCatCombo[this.state.currOwner].hasCat = true;
+    this.ownerCatCombo[this.state.currOwner].image = this.state.catImages;
   }
  
 
@@ -111,7 +124,7 @@ class App extends React.Component {
           <tbody>
             {Object.keys(this.ownerCatCombo).map(owner => (
               <tr id={`row-of-${owner}`}>
-                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed} </td>
+                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed}</td>
                 {!this.ownerCatCombo[owner].hasCat && <button className={"js-open-modal-button-"+owner} onClick={ this.openModal } value={ owner }>Add cat</button>}
               </tr>
             ))}
@@ -136,11 +149,10 @@ class App extends React.Component {
           <div className = "js-cat-image-div">
               {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://thumbs.gfycat.com/PotableEmbarrassedFrenchbulldog-small.gif"}/>}
               {this.state.catImages && <img className="js-image-of-cat" src={this.state.catImages} alt = "Cat" />}
-              {this.state.catImages && <button className="js-add-cat-to-owner-button" onClick={ this.onAddCatToOwner }>Add</button>}
-          </div>
-         
-          
+              {<button className="js-add-cat-to-owner-button" onClick={ this.onAddCatToOwner }>Add</button>}
+          </div>    
         </Modal>
+
       </div>
     );
   }

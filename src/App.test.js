@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import App from "./App";
 
 global.fetch = jest.fn(() => "default")
@@ -29,7 +29,7 @@ global.fetch = jest.fn(() => "default")
   }));
 
 describe("When running the app", () => {
-  const wrapper = shallow(<App />);
+  const wrapper = mount(<App />);
   
   it("should render the app", () => {
     expect(wrapper.length).toBe(1);
@@ -95,21 +95,14 @@ describe("When running the app", () => {
   });
 
   describe("When clicking the add cat to owner button & a cat has not previously been added", () => {
-    beforeAll(() => {
-      wrapper.setState({isModalOpen: true});
-      // wrapper.find('.js-open-modal-button-DanG').simulate("click")
-      wrapper.setState({currOwner: "DanG"});
-      wrapper.find('.js-select-cat-breed-menu').simulate('change', {target: { value : 'American Shorthair'}});
-      console.log("this is dropdown", wrapper.find('.js-select-cat-breed-menu'))
-      //wrapper.find('option').at(1).instance().selected = true;
-      // wrapper.setState({selectedBreed: "American Shorthair"});
-      // wrapper.setState({chosenCatBreed: "American Shorthair"});
-      wrapper.setState({catImages: "url"});
+    beforeAll(() => {  
+      wrapper.find('.js-open-modal-button-DanG').simulate("click");
+      wrapper.find('.js-select-cat-breed-menu').simulate('change', { target: {value:'American Shorthair'} });
       wrapper.find(".js-submit-choice-button").simulate("click");
       wrapper.find('.js-add-cat-to-owner-button').simulate("click");
-      wrapper.update();
+      wrapper.find('.js-close-modal-button').simulate("click");
     });
-    fit("should add the name of the cat next to the owners name in the track row", () => {
+    it("should add the name of the cat next to the owners name in the track row", () => {
       expect(wrapper.find(".js-DanG-name-row").text()).toBe("DanG - Owns American Shorthair");
     });
   });
