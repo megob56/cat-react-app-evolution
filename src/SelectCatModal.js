@@ -1,21 +1,102 @@
 import React from 'react';
 import Modal from 'react-modal';
+import ReactDOM from 'react-dom';
+
+import './App.css';
 
 
-export class SelectCatModal extends React.Component {
+export default class SelectCatModal extends React.Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = { 
+            catImages: [],
+            selectedBreed: "",
+        }
+    }
+
+    
+
+    // submitCatBreedChoice = (e) => {
+    //     e.preventDefault();
+
+    //     const { loading, catImage } = this.state;
+    //     const { onClick } = this.props;
+
+    //     onClick(catImage, loading);
+
+    //     this.setState({ loading: false, catImage: ""});
+    // }
+
+    // handleComponentMount = () => {
+    //     const { breeds } = this.state;
+
+
+    //     this.setState({ breeds: [] })
+    // }
+
+    onBreedSelected = async(e) => {
+        this.setState({
+          loading: true,
+          selectedBreed: e.target.value 
+        });
+    
+        let imagesSet = new Set();
+          await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${e.target.value}`)
+            .then((response) => response.json())
+            .then((data) => this.setState({ breedId: data[0].id }));
+           
+        console.log(this.state.breedId)
+    
+    
+          await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
+            .then((response) => response.json())
+            .then((data => {
+                data.forEach(x=> imagesSet.add(x.url));
+          }));
+        
+          this.setState({
+            catImages: Array.from(imagesSet),
+            loading: false})
+    
+        console.log(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`);
+        console.log(this.state.catImages);
+      }
+    
+    
+     
+    onAddToCatOwner = () => {
+        const node = ReactDOM.findDOMNode(this);
+        const owner = this.props.owner;
+        const breed = node.querySelector('.js-select-cat-breed-menu').value; 
+        const catImageUrl = this.state.catImages[0];
+       
+        this.props.clickHandler(owner, breed, catImageUrl)
+
+        this.setState({ selectedBreed: "", catImages: []});
+    }
 
     render(){
         return(
-            <Modal>
-                <h1>Choose a cat for someone</h1>
-                <button className="js-close-modal-button">X</button>
+            <Modal isOpen={ this.props.open }>
+                <h1>Choose a cat for {this.props.owner}</h1>
+                {/* <button className="js-close-modal-button" >X</button> */}
                 <div className="js-select-menu-div">
-                    <select className="js-select-cat-breed-menu" >
+                    <select className="js-select-cat-breed-menu"  value = { this.state.selectedBreed } onChange={this.onBreedSelected}>
                         <option>Choose One...</option>
+                        {this.props.breeds.map(breed => (
+                            <option key={breed} value={breed}>
+                                {breed}
+                            </option> 
+                        ))} 
                     </select>
-                    <button className="js-submit-choice-button">Submit</button>
+                    {/* <button className="js-submit-choice-button" onClick={ this.onSubmit }>Submit</button> */}
                 </div>
-                <div className="js-cat-image-in-modal-div"></div>
+                <div className="js-cat-image-div">
+                    {this.state.catImages.map(imgUrl => (<img src={imgUrl}/>))}
+                    <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner }>Add Cat to Owner</button>
+                </div>
             </Modal>
         )
     }

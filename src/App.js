@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import SelectCatModal from './SelectCatModal';
 
 import './App.css';
@@ -10,16 +9,24 @@ class App extends React.Component {
   
     this.state = {
       isModalOpen: false,
-      currOwner: "",
       breeds: [],
-      selectedBreed: "",
-      breedId: null,
-      catImages: "",
-      loading: false,
+      currOwner: "",
       addCat: false,
-      chosenCatBreed: "",
+   
+      // owners: [ { name:"DanG",  breed: 'placeholder', image: '', hasCat: false },
+      //     { name: "Jamez", breed: '', image: '', hasCat: false },
+      //     { name: "Sam", breed: '', image: '', hasCat: false },
+      //     { name:"Stjep", breed: '', image: '', hasCat: false },
+      //     { name:"Chris", breed: '', image: '', hasCat: false },
+      //     { name: "Rob", breed: '', image: '', hasCat: false },
+      //     { name: "JB", breed: '', image: '', hasCat: false },
+      //     { name:"Shuks", breed: '', image: '', hasCat: false },
+      //     { name:"Pam", breed: '', image: '', hasCat: false }]
 
     };
+
+    // this.setState({ this.state.owners[0].breed: "haaaiiiii"})
+    // console.log(this.state.owners[0].breed)
 
     this.ownerCatCombo = {
       DanG: { breed: '', image: '', hasCat: false },
@@ -29,7 +36,8 @@ class App extends React.Component {
       Chris: { breed: '', image: '', hasCat: false },
       Rob: { breed: '', image: '', hasCat: false },
       JB: { breed: '', image: '', hasCat: false },
-      Shuks: { breed: '', image: '', hasCat: false }
+      Shuks: { breed: '', image: '', hasCat: false },
+      Pam: { breed: '', image: '', hasCat: false },
     }
 
   // let owners = [ { name:"DanG",  breed: '', image: '', hasCat: false },
@@ -43,10 +51,17 @@ class App extends React.Component {
   
 
   
-  console.log(Object.keys(this.ownerCatCombo));
 
   }
 
+
+  // toggleModal = () => {
+  //   this.setState(state => ({
+  //     isModalOpen: !state.isModalOpen
+  //   }))
+
+  //   this.setState({currOwner})
+  // }
   
 
   openModal = (e) => {
@@ -56,49 +71,23 @@ class App extends React.Component {
     });
   }
 
-  closeModal = () => {
+  // closeModal = () => {
+  //   this.setState({
+  //     isModalOpen: false,
+  //     selectedBreed: "",
+  //     catImages: ""
+  //   });
+  // }
+
+  
+  onAddCatToOwner = (owner, breed, catImageUrl) => {
+    this.ownerCatCombo[owner].breed = breed;
+    this.ownerCatCombo[owner].hasCat = true;
+    this.ownerCatCombo[owner].image = catImageUrl;
+
     this.setState({
-      isModalOpen: false,
-      selectedBreed: "",
-      catImages: ""
+          isModalOpen: false,
     });
-  }
-
-   handleChange = (e) => {
-    this.setState({ selectedBreed: e.target.value, chosenCatBreed: e.target.value })
-    //console.log(this.state.selectedBreed[0])
-  }
-
-  onSubmit = async() => {
-    this.setState({
-      loading: true,
-      catImages: "",
-    });
-
-      await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectedBreed}`)
-        .then((response) => response.json())
-        .then((data) => this.setState({ breedId: data[0].id }));
-       
-    console.log(this.state.breedId)
-
-
-      await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
-        .then((response) => response.json())
-        .then((data => {
-          this.setState({catImages: data[0].url});
-      }));
-    
-    
-      this.setState({loading: false})
-
-    console.log(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`);
-    console.log(this.state.catImages);
-  }
-
-  onAddCatToOwner = () => {
-    this.ownerCatCombo[this.state.currOwner].breed = this.state.chosenCatBreed;
-    this.ownerCatCombo[this.state.currOwner].hasCat = true;
-    this.ownerCatCombo[this.state.currOwner].image = this.state.catImages;
   }
  
 
@@ -127,11 +116,23 @@ class App extends React.Component {
               <tr id={`row-of-${owner}`}>
                 <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed}</td>
                 {!this.ownerCatCombo[owner].hasCat && <button className={"js-open-modal-button-"+owner} onClick={ this.openModal } value={ owner }>Add cat</button>}
+                <div className="js-cat-image-div">
+                  {this.ownerCatCombo[owner].hasCat && <img alt="cat" className="js-cat-image" src={this.ownerCatCombo[owner].image} />}
+                </div>
+               
               </tr>
             ))}
           </tbody>
         </table>
+        <SelectCatModal 
+          open={ this.state.isModalOpen } 
 
+          // onChange={ this.changeBreed } 
+          // submit={ this.onSubmit }
+          clickHandler={ this.onAddCatToOwner } 
+          breeds = { this.state.breeds }
+          owner = { this.state.currOwner }
+        />
       </div>
     );
   }
