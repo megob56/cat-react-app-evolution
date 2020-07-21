@@ -11,19 +11,6 @@ class App extends React.Component {
       isModalOpen: false,
       breeds: [],
       currOwner: "",
-      addCat: false,
-      // ownerCatCombo : {
-      //   DanG: { breed: '', image: '', hasCat: false },
-      //   Jamez: { breed: '', image: '', hasCat: false },
-      //   Sam: { breed: '', image: '', hasCat: false },
-      //   Stjep: { breed: '', image: '', hasCat: false },
-      //   Chris: { breed: '', image: '', hasCat: false },
-      //   Rob: { breed: '', image: '', hasCat: false },
-      //   JB: { breed: '', image: '', hasCat: false },
-      //   Shuks: { breed: '', image: '', hasCat: false },
-      //   Pam: { breed: '', image: '', hasCat: false },
-      // }
-   
       ownerCatCombo: [ { name:"DanG",  breed: '', image: '', hasCat: false },
           { name: "Jamez", breed: '', image: '', hasCat: false },
           { name: "Sam", breed: '', image: '', hasCat: false },
@@ -32,7 +19,7 @@ class App extends React.Component {
           { name: "Rob", breed: '', image: '', hasCat: false },
           { name: "JB", breed: '', image: '', hasCat: false },
           { name:"Shuks", breed: '', image: '', hasCat: false },
-          { name:"Pam", breed: '', image: '', hasCat: false }]
+          { name:"Pam", breed: '', image: '', hasCat: false } ],
 
     };
 
@@ -84,13 +71,17 @@ class App extends React.Component {
     owner.image = catImageUrl;
 
     const updatedBreeds = [...this.state.breeds];
+    console.log("Shallow breeds", updatedBreeds)
     updatedBreeds.splice(updatedBreeds.findIndex(x=> x===breed),1);
-    
+    console.log("Manipulated breeds", updatedBreeds)
+
     this.setState({
       breeds: updatedBreeds,
       ownerCatCombo: owners,
       isModalOpen: false
     })
+
+    console.log('final breeds:', this.state.breeds);
   }
  
 
@@ -110,7 +101,7 @@ class App extends React.Component {
 
   render(){
     const { ownerCatCombo } = this.state;
-    console.log(ownerCatCombo)
+    console.log("breeds in render", this.state.breeds)
     return(
       <div className="App">
         <h1>Owners</h1>

@@ -8,6 +8,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import fetchMock from "jest-fetch-mock";
 
 fetchMock.enableMocks();
+global.fetch = fetchMock;
 
 configure({ adapter: new Adapter() });
 

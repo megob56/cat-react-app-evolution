@@ -52,12 +52,14 @@ export default class SelectCatModal extends React.Component {
     
      
     onAddToCatOwner = (e) => {
-        // this.setState({selectedCatImageUrl: e.target.value});
+        //this.setState({selectedCatImageUrl: e.target.value});
 
         const node = ReactDOM.findDOMNode(this);
         const owner = this.props.owner;
         const breed = node.querySelector('.js-select-cat-breed-menu').value; 
-        const catImageUrl = this.state.catImages[0];
+        const catImageUrl = e.target.value;
+        //this.state.catImages[0];
+        console.log(catImageUrl)
        
         this.props.clickHandler(owner, breed, catImageUrl)
 
@@ -66,7 +68,7 @@ export default class SelectCatModal extends React.Component {
 
     render(){
         return(
-            <Modal isOpen={ this.props.open }>
+            <Modal isOpen={ this.props.open } className="js-add-cat-to-owner-modal">
                 <h1>Choose a cat for {this.props.owner}</h1>
                 <div className="js-select-menu-div">
                     <select className="js-select-cat-breed-menu"  value = { this.state.selectedBreed } onChange={this.onBreedSelected}>
