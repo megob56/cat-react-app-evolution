@@ -13,28 +13,10 @@ export default class SelectCatModal extends React.Component {
         this.state = { 
             catImages: [],
             selectedBreed: "",
+            selectedCatImageUrl: "",
         }
     }
 
-    
-
-    // submitCatBreedChoice = (e) => {
-    //     e.preventDefault();
-
-    //     const { loading, catImage } = this.state;
-    //     const { onClick } = this.props;
-
-    //     onClick(catImage, loading);
-
-    //     this.setState({ loading: false, catImage: ""});
-    // }
-
-    // handleComponentMount = () => {
-    //     const { breeds } = this.state;
-
-
-    //     this.setState({ breeds: [] })
-    // }
 
     onBreedSelected = async(e) => {
         this.setState({
@@ -69,7 +51,9 @@ export default class SelectCatModal extends React.Component {
     
     
      
-    onAddToCatOwner = () => {
+    onAddToCatOwner = (e) => {
+        // this.setState({selectedCatImageUrl: e.target.value});
+
         const node = ReactDOM.findDOMNode(this);
         const owner = this.props.owner;
         const breed = node.querySelector('.js-select-cat-breed-menu').value; 
@@ -84,7 +68,6 @@ export default class SelectCatModal extends React.Component {
         return(
             <Modal isOpen={ this.props.open }>
                 <h1>Choose a cat for {this.props.owner}</h1>
-                {/* <button className="js-close-modal-button" >X</button> */}
                 <div className="js-select-menu-div">
                     <select className="js-select-cat-breed-menu"  value = { this.state.selectedBreed } onChange={this.onBreedSelected}>
                         <option>Choose One...</option>
@@ -94,17 +77,14 @@ export default class SelectCatModal extends React.Component {
                             </option> 
                         ))} 
                     </select>
-                    {/* <button className="js-submit-choice-button" onClick={ this.onSubmit }>Submit</button> */}
                 </div>
-                {/* <div className="js-cat-image-div"> */}
-                    {this.state.catImages.map(imgUrl => (
-                         <div className="js-cat-image-div">
-                            <img src={imgUrl} alt="Cat"/>
-                            <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner }>Add Cat to Owner</button>
-                        </div>
-                    ))}
-                    {/* <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner }>Add Cat to Owner</button> */}
-                {/* </div> */}
+                {this.state.catImages.map(imgUrl => (
+                        <div className="js-cat-image-div">
+                        <img src={imgUrl} alt="Cat"/>
+                        <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner } value={ imgUrl }>Add Cat to Owner</button>
+                    </div>
+                ))}
+                  
             </Modal>
         )
     }
