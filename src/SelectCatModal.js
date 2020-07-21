@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import ReactDOM from 'react-dom';
 
-import './App.css';
+import './SelectCatModal.css';
 
 
 export default class SelectCatModal extends React.Component {
@@ -43,22 +43,25 @@ export default class SelectCatModal extends React.Component {
         });
     
         let imagesSet = new Set();
-          await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${e.target.value}`)
+
+        await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${e.target.value}`)
             .then((response) => response.json())
             .then((data) => this.setState({ breedId: data[0].id }));
-           
+        
         console.log(this.state.breedId)
     
-    
-          await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
-            .then((response) => response.json())
-            .then((data => {
-                data.forEach(x=> imagesSet.add(x.url));
-          }));
+        for(let i = 0; i < 10; i++){
+            await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
+                .then((response) => response.json())
+                .then((data => {
+                    data.forEach(x=> imagesSet.add(x.url));
+            }));
+        }
         
-          this.setState({
+        this.setState({
             catImages: Array.from(imagesSet),
-            loading: false})
+            loading: false
+        })
     
         console.log(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`);
         console.log(this.state.catImages);
@@ -93,10 +96,15 @@ export default class SelectCatModal extends React.Component {
                     </select>
                     {/* <button className="js-submit-choice-button" onClick={ this.onSubmit }>Submit</button> */}
                 </div>
-                <div className="js-cat-image-div">
-                    {this.state.catImages.map(imgUrl => (<img src={imgUrl}/>))}
-                    <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner }>Add Cat to Owner</button>
-                </div>
+                {/* <div className="js-cat-image-div"> */}
+                    {this.state.catImages.map(imgUrl => (
+                         <div className="js-cat-image-div">
+                            <img src={imgUrl} alt="Cat"/>
+                            <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner }>Add Cat to Owner</button>
+                        </div>
+                    ))}
+                    {/* <button className="js-add-cat-to-owner-button" onClick={ this.onAddToCatOwner }>Add Cat to Owner</button> */}
+                {/* </div> */}
             </Modal>
         )
     }

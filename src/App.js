@@ -12,33 +12,44 @@ class App extends React.Component {
       breeds: [],
       currOwner: "",
       addCat: false,
+      // ownerCatCombo : {
+      //   DanG: { breed: '', image: '', hasCat: false },
+      //   Jamez: { breed: '', image: '', hasCat: false },
+      //   Sam: { breed: '', image: '', hasCat: false },
+      //   Stjep: { breed: '', image: '', hasCat: false },
+      //   Chris: { breed: '', image: '', hasCat: false },
+      //   Rob: { breed: '', image: '', hasCat: false },
+      //   JB: { breed: '', image: '', hasCat: false },
+      //   Shuks: { breed: '', image: '', hasCat: false },
+      //   Pam: { breed: '', image: '', hasCat: false },
+      // }
    
-      // owners: [ { name:"DanG",  breed: 'placeholder', image: '', hasCat: false },
-      //     { name: "Jamez", breed: '', image: '', hasCat: false },
-      //     { name: "Sam", breed: '', image: '', hasCat: false },
-      //     { name:"Stjep", breed: '', image: '', hasCat: false },
-      //     { name:"Chris", breed: '', image: '', hasCat: false },
-      //     { name: "Rob", breed: '', image: '', hasCat: false },
-      //     { name: "JB", breed: '', image: '', hasCat: false },
-      //     { name:"Shuks", breed: '', image: '', hasCat: false },
-      //     { name:"Pam", breed: '', image: '', hasCat: false }]
+      ownerCatCombo: [ { name:"DanG",  breed: '', image: '', hasCat: false },
+          { name: "Jamez", breed: '', image: '', hasCat: false },
+          { name: "Sam", breed: '', image: '', hasCat: false },
+          { name:"Stjep", breed: '', image: '', hasCat: false },
+          { name:"Chris", breed: '', image: '', hasCat: false },
+          { name: "Rob", breed: '', image: '', hasCat: false },
+          { name: "JB", breed: '', image: '', hasCat: false },
+          { name:"Shuks", breed: '', image: '', hasCat: false },
+          { name:"Pam", breed: '', image: '', hasCat: false }]
 
     };
 
     // this.setState({ this.state.owners[0].breed: "haaaiiiii"})
     // console.log(this.state.owners[0].breed)
 
-    this.ownerCatCombo = {
-      DanG: { breed: '', image: '', hasCat: false },
-      Jamez: { breed: '', image: '', hasCat: false },
-      Sam: { breed: '', image: '', hasCat: false },
-      Stjep: { breed: '', image: '', hasCat: false },
-      Chris: { breed: '', image: '', hasCat: false },
-      Rob: { breed: '', image: '', hasCat: false },
-      JB: { breed: '', image: '', hasCat: false },
-      Shuks: { breed: '', image: '', hasCat: false },
-      Pam: { breed: '', image: '', hasCat: false },
-    }
+    // this.ownerCatCombo = {
+    //   DanG: { breed: '', image: '', hasCat: false },
+    //   Jamez: { breed: '', image: '', hasCat: false },
+    //   Sam: { breed: '', image: '', hasCat: false },
+    //   Stjep: { breed: '', image: '', hasCat: false },
+    //   Chris: { breed: '', image: '', hasCat: false },
+    //   Rob: { breed: '', image: '', hasCat: false },
+    //   JB: { breed: '', image: '', hasCat: false },
+    //   Shuks: { breed: '', image: '', hasCat: false },
+    //   Pam: { breed: '', image: '', hasCat: false },
+    // }
 
   // let owners = [ { name:"DanG",  breed: '', image: '', hasCat: false },
   //     Jamez: { breed: '', image: '', hasCat: false },
@@ -80,14 +91,24 @@ class App extends React.Component {
   // }
 
   
-  onAddCatToOwner = (owner, breed, catImageUrl) => {
-    this.ownerCatCombo[owner].breed = breed;
-    this.ownerCatCombo[owner].hasCat = true;
-    this.ownerCatCombo[owner].image = catImageUrl;
+  onAddCatToOwner = (ownerName, breed, catImageUrl) => {
+    // this.ownerCatCombo[owner].breed = breed;
+    // this.ownerCatCombo[owner].hasCat = true;
+    // this.ownerCatCombo[owner].image = catImageUrl;
+    const { ownerCatCombo } = this.state;
+    const owner = ownerCatCombo.filter(owner => {return owner.name === ownerName});
+    owner.breed = breed;
+    owner.hasCat = true;
+    owner.image = catImageUrl;
 
     this.setState({
-          isModalOpen: false,
-    });
+      ownerCatCombo: [{ ...ownerCatCombo[ownerName], [ownerName]: owner }],
+      isModalOpen: false
+    })
+
+    // this.setState({
+    //       isModalOpen: false,
+    // });
   }
  
 
@@ -106,18 +127,20 @@ class App extends React.Component {
 
 
   render(){
-
+    const { ownerCatCombo } = this.state;
+    console.log(ownerCatCombo)
     return(
       <div className="App">
         <h1>Owners</h1>
         <table className="js-owner-table">
           <tbody>
-            {Object.keys(this.ownerCatCombo).map(owner => (
-              <tr id={`row-of-${owner}`}>
-                <td id={owner} className={`js-${owner}-name-row`}>{owner} {this.ownerCatCombo[owner].hasCat && "- Owns "+ this.ownerCatCombo[owner].breed}</td>
-                {!this.ownerCatCombo[owner].hasCat && <button className={"js-open-modal-button-"+owner} onClick={ this.openModal } value={ owner }>Add cat</button>}
+            
+            {ownerCatCombo.map(owner => (
+              <tr id={`row-of-${owner.Name}`}>
+                <td id={owner.Name} className={`js-${owner.Name}-name-row`}>{owner.Name} {owner.hasCat && "- Owns "+ owner.breed}</td>
+                {!owner.hasCat && <button className={"js-open-modal-button-"+owner.Name} onClick={ this.openModal } value={ owner.Name }>Add cat</button>}
                 <div className="js-cat-image-div">
-                  {this.ownerCatCombo[owner].hasCat && <img alt="cat" className="js-cat-image" src={this.ownerCatCombo[owner].image} />}
+                  {owner.hasCat && <img alt="cat" className="js-cat-image" src={owner.image} />}
                 </div>
                
               </tr>
