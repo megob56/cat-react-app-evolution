@@ -22,34 +22,6 @@ class App extends React.Component {
           { name:"Pam", breed: '', image: '', hasCat: false } ],
 
     };
-
-    // this.setState({ this.state.owners[0].breed: "haaaiiiii"})
-    // console.log(this.state.owners[0].breed)
-
-    // this.ownerCatCombo = {
-    //   DanG: { breed: '', image: '', hasCat: false },
-    //   Jamez: { breed: '', image: '', hasCat: false },
-    //   Sam: { breed: '', image: '', hasCat: false },
-    //   Stjep: { breed: '', image: '', hasCat: false },
-    //   Chris: { breed: '', image: '', hasCat: false },
-    //   Rob: { breed: '', image: '', hasCat: false },
-    //   JB: { breed: '', image: '', hasCat: false },
-    //   Shuks: { breed: '', image: '', hasCat: false },
-    //   Pam: { breed: '', image: '', hasCat: false },
-    // }
-
-  // let owners = [ { name:"DanG",  breed: '', image: '', hasCat: false },
-  //     Jamez: { breed: '', image: '', hasCat: false },
-  //     Sam: { breed: '', image: '', hasCat: false },
-  //     Stjep: { breed: '', image: '', hasCat: false },
-  //     Chris: { breed: '', image: '', hasCat: false },
-  //     Rob: { breed: '', image: '', hasCat: false },
-  //     JB: { breed: '', image: '', hasCat: false },
-  //     Shuks: { breed: '', image: '', hasCat: false }]
-  
-
-  
-
   }
 
   
