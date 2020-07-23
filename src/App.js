@@ -9,7 +9,6 @@ class App extends React.Component {
   
     this.state = {
       isModalOpen: false,
-      breeds: [],
       currOwner: "",
       ownerCatCombo: [ { name:"DanG",  breed: '', image: '', hasCat: false },
           { name: "Jamez", breed: '', image: '', hasCat: false },
@@ -42,32 +41,13 @@ class App extends React.Component {
     owner.hasCat = true;
     owner.image = catImageUrl;
 
-    const updatedBreeds = [...this.state.breeds];
-    console.log("Shallow breeds", updatedBreeds)
-    updatedBreeds.splice(updatedBreeds.findIndex(x=> x===breed),1);
-    console.log("Manipulated breeds", updatedBreeds)
-
     this.setState({
-      breeds: updatedBreeds,
       ownerCatCombo: owners,
       isModalOpen: false
     })
   }
  
 
-  componentDidMount() {
-    let initialBreeds = [];
-    fetch("https://api.thecatapi.com/v1/breeds")
-      .then((response) => response.json())
-      .then((data => {
-        initialBreeds = data.map((x) => {
-          return x.name
-        });
-
-        this.setState({breeds: initialBreeds});
-        console.log('in component did mount', this.state.breeds);
-    }));
-  }
 
 
   render(){
@@ -94,7 +74,6 @@ class App extends React.Component {
         <SelectCatModal 
           open={ this.state.isModalOpen } 
           clickHandler={ this.onAddCatToOwner } 
-          breeds = { this.state.breeds }
           owner = { this.state.currOwner }
         />
       </div>

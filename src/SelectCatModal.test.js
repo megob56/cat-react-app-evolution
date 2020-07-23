@@ -4,6 +4,12 @@ import { shallow } from "enzyme";
 import SelectCatModal from "./SelectCatModal";
 
 global.fetch = jest.fn(() => "default")
+    .mockImplementationOnce(() => Promise.resolve({
+        json: () =>
+        Promise.resolve([
+            {name: "American Shorthair"},{name: "Bengal"},{name: "Siamese"}
+        ]),
+    })) 
   .mockImplementationOnce(() => Promise.resolve({
     json: () =>
       Promise.resolve([
@@ -22,15 +28,18 @@ global.fetch = jest.fn(() => "default")
   }));
 
 describe("When opening the modal", () => {
-    const breeds = ["cat1", "cat2", "cat3"];
     const currOwner = "Meaghan";
     const isModalOpen = true;
     const catImageUrl = ["catImage1Url", "catImage2Url", "catImage3Url"];
-    const wrapper = shallow(<SelectCatModal breeds = {breeds} owner = {currOwner} open={isModalOpen}/>);
+    const wrapper = shallow(<SelectCatModal owner = {currOwner} open={isModalOpen}/>);
     
     beforeAll(() => {
       wrapper.setState({selectedBreed: "testBreed"});
       wrapper.setState({catImages: ["catImage1", "catImage2", "catImage3"]});
+    });
+
+    it("should call on the api", () => {
+        expect(fetch).toHaveBeenCalledWith('https://api.thecatapi.com/v1/breeds');
     });
 
     it("the modal should be visible", () => {
@@ -61,4 +70,19 @@ describe("When opening the modal", () => {
         expect(wrapper.state().catImages).toStrictEqual(["catImage1", "catImage2", "catImage3"]);
       });
     });
+
+    describe("When adding a cat to owner", () => {
+        beforeAll(() => {
+            wrapper.find('.js-select-cat-breed-menu').simulate('change', { target: {value:'American Shorthair'} });
+            wrapper.find('.js-add-cat-to-owner-button').simulate('click');
+        })
+
+        it("should remove the selected breed from the list of breeds", () => {
+            expect(wrapper.state().breeds).toStrictEqual(['Bengal', 'Siamese']);
+        });
+    });
+
   });
+
+  
+
