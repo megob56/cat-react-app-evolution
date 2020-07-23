@@ -69,45 +69,74 @@ import { findNodeModule } from "jest-resolve";
 //     expect(wrapper.state().isModalOpen).toBe(false);
 //   });
 // });
-
-describe("When a cat has already been added", () => {
-  // const testProps = {
-  //   breeds: '', 
-  //   owner: ''
-  // }
-  //let wrapper;
-  let wrapper = mount(<App />);
-  beforeAll(() => {
-    fetch.mockResponseOnce(JSON.stringify([{name: "American Shorthair"},{name: "Bengal"},{name: "Siamese"}]))
-    .mockImplementationOnce(JSON.stringify([{id: "breedID"}]))
-    .mockImplementationOnce(JSON.stringify([{url: "catImageURL"}]))
+// describe("When a cat has already been added", () => {
+//   // const testProps = {
+//   //   breeds: '', 
+//   //   owner: ''
+//   // }
+//   //let wrapper;
+//   let wrapper = mount(<App />);
+//   beforeAll(() => {
+//     fetch.mockResponseOnce(JSON.stringify([{name: "American Shorthair"},{name: "Bengal"},{name: "Siamese"}]))
+//     .mockImplementationOnce(JSON.stringify([{id: "breedID"}]))
+//     .mockImplementationOnce(JSON.stringify([{url: "catImageURL"}]))
   
      
-    // wrapper = mount(<App />);
-    wrapper.find('.js-open-modal-button-DanG').simulate("click");
-    console.log("firstone", wrapper.html())
-      wrapper.find('.js-select-cat-breed-menu').simulate('change', { target: {value:'American Shorthair'} });
-      console.log(wrapper.html());
-      wrapper.find('.js-add-cat-to-owner-button').at(0).simulate("click");
-    // console.log(wrapper.html());
-    // wrapper.find(SelectCatModal).invoke("clickHandler")("DanG","American Shorthair","CatImageUrl");
+//     // wrapper = mount(<App />);
+//     wrapper.find('.js-open-modal-button-DanG').simulate("click");
+//     console.log("firstone", wrapper.html())
+//       wrapper.find('.js-select-cat-breed-menu').simulate('change', { target: {value:'American Shorthair'} });
+//       console.log(wrapper.html());
+//       wrapper.find('.js-add-cat-to-owner-button').at(0).simulate("click");
+//     // console.log(wrapper.html());
+//     // wrapper.find(SelectCatModal).invoke("clickHandler")("DanG","American Shorthair","CatImageUrl");
     
+//   });
+  
+//   it("should not allow you to add another cat to the same owner again", () => {
+//     //wrapper.update();
+//     expect(wrapper.find('js-open-modal-button-DanG').length).toBe(0);
+//   });
+//   // it("the selected cat should no longer be visible in the list of breeds", async () => {
+//   //   // const wrapper = shallow(
+//   //   //   <SelectCatModal {...testProps} owner="DanG" breeds="American Shorthair"  />
+//   //   // );
+   
+//   //  await wrapper.update();
+    
+//   //   expect(wrapper.find(SelectCatModal).props.breeds).toStrictEqual(['Bengal', 'Siamese']);
+//   // });
+// });
+
+describe("When a cat has already been added", () => {
+  let wrapper;
+  beforeAll(() => {
+    fetch.mockResponseOnce(JSON.stringify([{name: "American Shorthair"},{name: "Bengal"},{name: "Siamese"}]))
+    wrapper = shallow(<App />);
+    
+    wrapper.update();
+
+    // wrapper.find(SelectCatModal).invoke("clickHandler")("DanG","American Shorthair","CatImageUrl");
+    wrapper.instance().onAddCatToOwner("DanG", "American Shorthair", "catImageUrl");
   });
+
   
   it("should not allow you to add another cat to the same owner again", () => {
-    //wrapper.update();
-    expect(wrapper.find('js-open-modal-button-DanG').length).toBe(0);
-  });
-  // it("the selected cat should no longer be visible in the list of breeds", async () => {
-  //   // const wrapper = shallow(
-  //   //   <SelectCatModal {...testProps} owner="DanG" breeds="American Shorthair"  />
-  //   // );
-   
-  //  await wrapper.update();
+    wrapper.update();
+    console.log("DID THIS WORKS", wrapper.text());
+    expect(wrapper.find('.js-open-modal-button-DanG').length).toBe(0);
+    expect(wrapper.find('.js-open-modal-button-Sam').length).toBe(1);
     
-  //   expect(wrapper.find(SelectCatModal).props.breeds).toStrictEqual(['Bengal', 'Siamese']);
-  // });
+  });
+  it("the selected cat should no longer be visible in the list of breeds", () => {
+    wrapper.update(); 
+    //expect(wrapper.state().breeds).toStrictEqual(['Bengal', 'Siamese']);
+   
+      expect(wrapper.find(SelectCatModal).props().breeds).toStrictEqual(['Bengal', 'Siamese']);
+   
+  });
 });
+
 
 // describe("When the component mounts", () => {
     

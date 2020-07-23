@@ -52,8 +52,6 @@ class App extends React.Component {
       ownerCatCombo: owners,
       isModalOpen: false
     })
-
-    console.log('final breeds:', this.state.breeds);
   }
  
 
@@ -67,6 +65,7 @@ class App extends React.Component {
         });
 
         this.setState({breeds: initialBreeds});
+        console.log('in component did mount', this.state.breeds);
     }));
   }
 
